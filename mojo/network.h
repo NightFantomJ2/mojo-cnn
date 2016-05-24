@@ -467,7 +467,7 @@ public:
 
 	// write parameters to stream/file
 	// note that this does not persist intermediate training information that could be needed to 'pickup where you left off'
-	bool write(std::ofstream ofs, bool binary=false) 
+	bool write(std::ofstream& ofs, bool binary=false) 
 	{
 		// save layers
 		ofs<<(int)layer_sets[MAIN_LAYER_SET].size()<<std::endl;
@@ -510,7 +510,10 @@ public:
 		
 		return true;
 	}
-	bool write(std::string &filename, bool binary = false) { return write(std::ofstream(filename.c_str()), binary); }
+	bool write(std::string &filename, bool binary = false) {
+		std::ofstream temp(filename.c_str());
+		return write(temp , binary);
+	}
 
 	// read network from a file/stream
 	bool read(std::istream &ifs)
